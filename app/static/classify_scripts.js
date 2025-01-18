@@ -16,7 +16,7 @@ document.getElementById('upload-form').addEventListener('submit', function(event
     document.getElementById('result-text').textContent = '';
 
     // Send data to the Flask API
-    fetch('/classify', {
+    fetch('http://127.0.0.1:5000/classify', {
         method: 'POST',
         body: formData,
     })
