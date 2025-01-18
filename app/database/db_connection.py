@@ -1,20 +1,27 @@
-from app.database.db import users
+from pymongo import MongoClient
+from app.database.db import db
 
-class Database_operation:
 
-    @classmethod
-    def insert_entry(username, hashed_password, tokens=0):
-        users.insert_one({"Username": username,
-                            "Password": hashed_password,
-                            "Tokens": tokens
-                            })
+class DatabaseOperation:
+    def __init__(self) -> None:
+        self.db = db
+        self.users = self.db.Users
 
-    @classmethod 
-    def update_token(username,amount):
-        users.update_one({
+    def insert_entry(self, username, hashed_password, tokens=0):
+        try:
+            res = self.users.insert_one({"Username": username,
+                                         "Password": hashed_password,
+                                         "Tokens": tokens
+                                         }).acknowledged
+            print(res)
+        except Exception as e:
+            print('err', e)
+
+    def update_token(self, username, amount):
+        self.users.update_one({
             "Username": username},
             {
-                "$set":{
+                "$set": {
                     "Tokens": amount
                 }
-            })
+        })
