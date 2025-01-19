@@ -6,22 +6,17 @@ from app.controller.image_controller import Controller
 from app.database.db import db
 from app.database.db_connection import DatabaseOperation
 from app.service.image_service import Validations, generate_return_dictionary
+from app.decorators.protect_route import protect_route 
 
 class Classify(Resource):
+    @protect_route
     def post(self):
         # get poseted data
         posted_data = request.get_json()
 
-        # get credentials
-        username = posted_data['username']
-        password = posted_data['password']
+        username = posted_data.get('username')
         url = posted_data.get('url', '')
         file = posted_data.get('file', '')
-
-        # verify credentials
-        ret_json, error = Validations().verify_credentials(username, password)
-        if error:
-            return jsonify(ret_json)
 
         # check if the user has tokens
         users = db.Users

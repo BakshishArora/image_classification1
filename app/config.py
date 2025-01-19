@@ -1,5 +1,5 @@
 import os 
 
 class Config:
-    CONNECTION_URL='xyz'
+    SECRET_KEY = "thisismysecretkey"
     ADMIN_PASSWORD='abc123'
