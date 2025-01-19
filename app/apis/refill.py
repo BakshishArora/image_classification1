@@ -6,8 +6,10 @@ from app.controller.image_controller import Controller
 from app.database.db import db
 from app.database.db_connection import DatabaseOperation
 from app.service.image_service import Validations, generate_return_dictionary
+from app.decorators.protect_route import protect_route
 
 class Refill(Resource):
+    @protect_route
     def post(self):
         # get posted data
         posted_data = request.get_json()
@@ -22,7 +24,7 @@ class Refill(Resource):
             return jsonify(generate_return_dictionary(301, "Invalid Username"))
 
         # check admin password
-        if Validations().validate_admin_password(password):
+        if not Validations().validate_admin_password(password):
             return jsonify(generate_return_dictionary(302, "Incorrect Password"))
 
         # update the token and respond
